@@ -1,3 +1,5 @@
+package bunchbysoh;
+
 public class Main {
   static class CountsBySoH {
     public int healthy = 0;
@@ -40,7 +42,7 @@ public class Main {
 
   static void testBucketingByHealth() {
     System.out.println("Counting batteries by SoH...\n");
-    int[] presentCapacities = {113, 116, 80, 95, 92, 70, 1000};
+    int[] presentCapacities = {113, 116, 80, 95, 92, 70, 8000};  //added one more capacity - 8000
     CountsBySoH counts = countBatteriesByHealth(presentCapacities);
     counts.classifyBatteryBySoh();
     
