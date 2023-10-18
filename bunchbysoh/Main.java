@@ -1,35 +1,33 @@
-package bunchbysoh;
-
 public class Main {
   static class CountsBySoH {
     public int healthy = 0;
     public int exchange = 0;
     public int failed = 0;
-    public int[] currentBatteryCapacity;
-    public int[] batterySoh;
+    public int invalidCount = 0;
+    public int[] calculateBatterySoh;
 
     CountsBySoH(int[] presentCapacities) {
-      this.currentBatteryCapacity = presentCapacities;
-      this.batterySoh = new int[presentCapacities.length];
+      this.calculateBatterySoh = presentCapacities;
     }
 
-    public void calculateSoh(){
-       for (int i = 0; i < currentBatteryCapacity.length; i++) {
-           int soh = (100 * currentBatteryCapacity[i]) / 120;
-           this.batterySoh[i] = soh;
-        }
-    }
-
+    // Optimised the previous approah, 
+    // Time Complexity - O(n), SpaceComplexity - O(1)
+    
     public void classifyBatteryBySoh(){
-       for (int soh : this.batterySoh) {
+       for (int capacity : this.calculateBatterySoh) {
+        int soh = (100 * capacity) / 120;
+           
         if (soh > 80 && soh <= 100) {
             this.healthy += 1;
         }
         else if (soh > 63 && soh < 80) {
             this.exchange += 1;
         }
-        else {
+        else if(soh < 63 && soh > 0) {
             this.failed += 1;
+        }
+        else{
+            this.invalidCount +=1;
         }
       }
     }
@@ -42,14 +40,16 @@ public class Main {
 
   static void testBucketingByHealth() {
     System.out.println("Counting batteries by SoH...\n");
-    int[] presentCapacities = {113, 116, 80, 95, 92, 70};
+    int[] presentCapacities = {113, 116, 80, 95, 92, 70, 1000};
     CountsBySoH counts = countBatteriesByHealth(presentCapacities);
-    counts.calculateSoh();
     counts.classifyBatteryBySoh();
     
     assert(counts.healthy == 2);
     assert(counts.exchange == 3);
     assert(counts.failed == 1);
+    
+    // count invalid capacity 
+    assert(counts.invalidCount == 1);
     System.out.println("Done counting :)\n");
   }
 
